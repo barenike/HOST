@@ -4,25 +4,24 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.UUID;
 
 @Entity
 public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private UUID uuid;
+    private long id;
     private String login;
     private String password;
 
     public UserEntity() {
     }
 
-    public UUID getUuid() {
-        return uuid;
+    public long getId() {
+        return id;
     }
 
-    public void setUuid(UUID uuid) {
-        this.uuid = uuid;
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getLogin() {
