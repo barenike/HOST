@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Objects;
+import java.util.UUID;
 
 @Entity
 public class UserEntity {
@@ -14,20 +15,27 @@ public class UserEntity {
     @GeneratedValue(generator = "uuid")
     // name - название перемнной к которой мы хотим обратиться в БД?
     // strategy - см. в Google
-    @GenericGenerator(name = "id", strategy = "uuid2")
-    private String uuid;
+    @GenericGenerator(name = "user_id", strategy = "uuid2")
+    private UUID user_uuid;
     private String login;
     private String password;
 
+    public UserEntity(UUID user_uuid, String login, String password) {
+        this.user_uuid = user_uuid;
+        this.login = login;
+        this.password = password;
+    }
+
     public UserEntity() {
+
     }
 
-    public String getUuid() {
-        return uuid;
+    public UUID getUser_uuid() {
+        return user_uuid;
     }
 
-    public void setUuid(String uuid) {
-        this.uuid = uuid;
+    public void setUser_uuid(UUID user_uuid) {
+        this.user_uuid = user_uuid;
     }
 
     public String getLogin() {
@@ -54,11 +62,11 @@ public class UserEntity {
 
         UserEntity that = (UserEntity) o;
 
-        return Objects.equals(uuid, that.uuid);
+        return Objects.equals(user_uuid, that.user_uuid);
     }
 
     @Override
     public int hashCode() {
-        return uuid != null ? uuid.hashCode() : 0;
+        return user_uuid != null ? user_uuid.hashCode() : 0;
     }
 }
