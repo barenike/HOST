@@ -1,23 +1,27 @@
 package com.reservation_system.host.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
+import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "reservations")
 public class ReservationEntity {
-    // Не факт, что будет работать код с 12 строки по 17
     @Id
-    @GeneratedValue(generator = "uuid")
-    // name - название перемнной к которой мы хотим обратиться в БД?
-    // strategy - см. в Google
-    @GenericGenerator(name = "reservation_id", strategy = "uuid2")
-    private UUID reservation_uuid;
+    @Column(name = "reservation_id")
+    private UUID reservation_uuid; // Будем генерировать при создании объекта: UUID uuid = UUID.randomUUID();
+
+    @Column(name = "user_id")
     private UUID user_UUID;
+
+    @Column(name = "table_id")
     private UUID table_UUID;
+
+    @Column(name = "begin_date")
     private Date beginDate;
+
+    @Column(name = "end_date")
     private Date endDate;
 
     public ReservationEntity(UUID reservation_uuid, UUID user_UUID, UUID table_UUID, Date beginDate, Date endDate) {
@@ -26,6 +30,10 @@ public class ReservationEntity {
         this.table_UUID = table_UUID;
         this.beginDate = beginDate;
         this.endDate = endDate;
+    }
+
+    public ReservationEntity() {
+
     }
 
     public UUID getReservation_uuid() {
@@ -66,5 +74,20 @@ public class ReservationEntity {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ReservationEntity that = (ReservationEntity) o;
+
+        return Objects.equals(reservation_uuid, that.reservation_uuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return reservation_uuid != null ? reservation_uuid.hashCode() : 0;
     }
 }

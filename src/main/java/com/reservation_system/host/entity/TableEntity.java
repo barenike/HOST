@@ -1,20 +1,20 @@
 package com.reservation_system.host.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Objects;
 import java.util.UUID;
 
+@Entity
+@Table(name = "tables")
 public class TableEntity {
-    // Не факт, что будет работать код с 12 строки по 17
     @Id
-    @GeneratedValue(generator = "uuid")
-    // name - название перемнной к которой мы хотим обратиться в БД?
-    // strategy - см. в Google
-    @GenericGenerator(name = "table_id", strategy = "uuid2")
-    private UUID table_uuid;
+    @Column(name = "table_id")
+    private UUID table_uuid; // Будем генерировать при создании объекта: UUID uuid = UUID.randomUUID();
+
+    @Column(name = "is_available")
     private boolean isAvailable;
+
+    @Column(name = "description")
     private String description;
 
     public TableEntity(UUID table_uuid, boolean isAvailable) {
@@ -26,6 +26,10 @@ public class TableEntity {
         this.table_uuid = table_uuid;
         this.isAvailable = isAvailable;
         this.description = description;
+    }
+
+    public TableEntity() {
+
     }
 
     public UUID getTable_uuid() {
@@ -50,5 +54,20 @@ public class TableEntity {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        TableEntity that = (TableEntity) o;
+
+        return Objects.equals(table_uuid, that.table_uuid);
+    }
+
+    @Override
+    public int hashCode() {
+        return table_uuid != null ? table_uuid.hashCode() : 0;
     }
 }
