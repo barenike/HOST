@@ -1,6 +1,6 @@
-package com.host.repository;
+package com.host.model.repository;
 
-import com.host.entity.UserEntity;
+import com.host.model.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

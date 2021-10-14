@@ -1,8 +1,8 @@
-package com.host.service.implementations;
+package com.host.model.service.implementations;
 
-import com.host.entity.UserEntity;
-import com.host.repository.UserRepository;
-import com.host.service.interfaces.UserService;
+import com.host.model.entity.UserEntity;
+import com.host.model.repository.UserRepository;
+import com.host.model.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
