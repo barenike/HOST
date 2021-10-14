@@ -1,4 +1,4 @@
-package com.reservation_system.host.entity;
+package com.host.entity;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -10,13 +10,13 @@ import java.util.UUID;
 public class ReservationEntity {
     @Id
     @Column(name = "reservation_id")
-    private UUID reservation_uuid; // Будем генерировать при создании объекта: UUID uuid = UUID.randomUUID();
+    private UUID reservationId; // Будем генерировать при создании объекта: UUID uuid = UUID.randomUUID();
 
     @Column(name = "user_id")
-    private UUID user_UUID;
+    private UUID userId;
 
     @Column(name = "table_id")
-    private UUID table_UUID;
+    private UUID tableId;
 
     @Column(name = "begin_date")
     private Date beginDate;
@@ -24,10 +24,10 @@ public class ReservationEntity {
     @Column(name = "end_date")
     private Date endDate;
 
-    public ReservationEntity(UUID reservation_uuid, UUID user_UUID, UUID table_UUID, Date beginDate, Date endDate) {
-        this.reservation_uuid = reservation_uuid;
-        this.user_UUID = user_UUID;
-        this.table_UUID = table_UUID;
+    public ReservationEntity(UUID reservationId, UUID userId, UUID tableId, Date beginDate, Date endDate) {
+        this.reservationId = reservationId;
+        this.userId = userId;
+        this.tableId = tableId;
         this.beginDate = beginDate;
         this.endDate = endDate;
     }
@@ -36,28 +36,28 @@ public class ReservationEntity {
 
     }
 
-    public UUID getReservation_uuid() {
-        return reservation_uuid;
+    public UUID getReservationId() {
+        return reservationId;
     }
 
-    public void setReservation_uuid(UUID reservation_uuid) {
-        this.reservation_uuid = reservation_uuid;
+    public void setReservationId(UUID reservationId) {
+        this.reservationId = reservationId;
     }
 
-    public UUID getUser_UUID() {
-        return user_UUID;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setUser_UUID(UUID user_UUID) {
-        this.user_UUID = user_UUID;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
-    public UUID getTable_UUID() {
-        return table_UUID;
+    public UUID getTableId() {
+        return tableId;
     }
 
-    public void setTable_UUID(UUID table_UUID) {
-        this.table_UUID = table_UUID;
+    public void setTableId(UUID tableId) {
+        this.tableId = tableId;
     }
 
     public Date getBeginDate() {
@@ -83,11 +83,11 @@ public class ReservationEntity {
 
         ReservationEntity that = (ReservationEntity) o;
 
-        return Objects.equals(reservation_uuid, that.reservation_uuid);
+        return Objects.equals(reservationId, that.reservationId);
     }
 
     @Override
     public int hashCode() {
-        return reservation_uuid != null ? reservation_uuid.hashCode() : 0;
+        return reservationId != null ? reservationId.hashCode() : 0;
     }
 }

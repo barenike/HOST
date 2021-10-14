@@ -1,4 +1,4 @@
-package com.reservation_system.host.entity;
+package com.host.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -9,7 +9,7 @@ import java.util.UUID;
 public class UserEntity {
     @Id
     @Column(name = "user_id")
-    private UUID user_uuid; // Будем генерировать при создании объекта: UUID uuid = UUID.randomUUID();
+    private UUID userId; // Будем генерировать при создании объекта: UUID uuid = UUID.randomUUID();
 
     @Column(name = "e-mail")
     private String login;
@@ -20,14 +20,14 @@ public class UserEntity {
     @Column(name = "is_admin")
     private boolean isAdmin;
 
-    public UserEntity(UUID user_uuid, String login, String password) {
-        this.user_uuid = user_uuid;
+    public UserEntity(UUID userId, String login, String password) {
+        this.userId = userId;
         this.login = login;
         this.password = password;
     }
 
-    public UserEntity(UUID user_uuid, String login, String password, boolean isAdmin) {
-        this.user_uuid = user_uuid;
+    public UserEntity(UUID userId, String login, String password, boolean isAdmin) {
+        this.userId = userId;
         this.login = login;
         this.password = password;
         this.isAdmin = isAdmin;
@@ -37,12 +37,12 @@ public class UserEntity {
 
     }
 
-    public UUID getUser_uuid() {
-        return user_uuid;
+    public UUID getUserId() {
+        return userId;
     }
 
-    public void setUser_uuid(UUID user_uuid) {
-        this.user_uuid = user_uuid;
+    public void setUserId(UUID userId) {
+        this.userId = userId;
     }
 
     public String getLogin() {
@@ -77,11 +77,11 @@ public class UserEntity {
 
         UserEntity that = (UserEntity) o;
 
-        return Objects.equals(user_uuid, that.user_uuid);
+        return Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return user_uuid != null ? user_uuid.hashCode() : 0;
+        return userId != null ? userId.hashCode() : 0;
     }
 }

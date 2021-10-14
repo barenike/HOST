@@ -1,7 +1,7 @@
-package com.reservation_system.host.controller;
+package com.host.controller;
 
-import com.reservation_system.host.entity.UserEntity;
-import com.reservation_system.host.repository.UserRepository;
+import com.host.entity.UserEntity;
+import com.host.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

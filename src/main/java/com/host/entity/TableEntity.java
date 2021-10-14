@@ -1,4 +1,4 @@
-package com.reservation_system.host.entity;
+package com.host.entity;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -9,7 +9,7 @@ import java.util.UUID;
 public class TableEntity {
     @Id
     @Column(name = "table_id")
-    private UUID table_uuid; // Будем генерировать при создании объекта: UUID uuid = UUID.randomUUID();
+    private UUID tableId; // Будем генерировать при создании объекта: UUID uuid = UUID.randomUUID();
 
     @Column(name = "is_available")
     private boolean isAvailable;
@@ -17,13 +17,13 @@ public class TableEntity {
     @Column(name = "description")
     private String description;
 
-    public TableEntity(UUID table_uuid, boolean isAvailable) {
-        this.table_uuid = table_uuid;
+    public TableEntity(UUID tableId, boolean isAvailable) {
+        this.tableId = tableId;
         this.isAvailable = isAvailable;
     }
 
-    public TableEntity(UUID table_uuid, boolean isAvailable, String description) {
-        this.table_uuid = table_uuid;
+    public TableEntity(UUID tableId, boolean isAvailable, String description) {
+        this.tableId = tableId;
         this.isAvailable = isAvailable;
         this.description = description;
     }
@@ -32,12 +32,12 @@ public class TableEntity {
 
     }
 
-    public UUID getTable_uuid() {
-        return table_uuid;
+    public UUID getTableId() {
+        return tableId;
     }
 
-    public void setTable_uuid(UUID table_uuid) {
-        this.table_uuid = table_uuid;
+    public void setTableId(UUID tableId) {
+        this.tableId = tableId;
     }
 
     public boolean isAvailable() {
@@ -63,11 +63,11 @@ public class TableEntity {
 
         TableEntity that = (TableEntity) o;
 
-        return Objects.equals(table_uuid, that.table_uuid);
+        return Objects.equals(tableId, that.tableId);
     }
 
     @Override
     public int hashCode() {
-        return table_uuid != null ? table_uuid.hashCode() : 0;
+        return tableId != null ? tableId.hashCode() : 0;
     }
 }
