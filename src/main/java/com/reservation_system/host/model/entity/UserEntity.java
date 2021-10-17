@@ -1,9 +1,8 @@
-package com.host.model.entity;
+package com.reservation_system.host.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -11,26 +10,27 @@ import java.util.UUID;
 @Table(name = "users")
 public class UserEntity {
     @Id
-    @Column(name = "user_id")
-    private UUID userId; // Будем генерировать при создании объекта: UUID uuid = UUID.randomUUID();
+    @Column(unique = true, name = "user_id", nullable = false)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private UUID userId;
 
-    @Column(name = "e-mail")
+    @Column(name = "login", nullable = false)
     private String login;
 
-    @Column(name = "password")
+    @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "is_admin")
+    @Column(name = "is_admin", nullable = false)
     private boolean isAdmin;
 
-    public UserEntity(UUID userId, String login, String password) {
-        this.userId = userId;
+    public UserEntity(String login, String password) {
         this.login = login;
         this.password = password;
+        this.isAdmin = false;
     }
 
-    public UserEntity(UUID userId, String login, String password, boolean isAdmin) {
-        this.userId = userId;
+    public UserEntity(String login, String password, boolean isAdmin) {
         this.login = login;
         this.password = password;
         this.isAdmin = isAdmin;

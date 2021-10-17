@@ -1,8 +1,8 @@
-package com.host.bootstrap;
+package com.reservation_system.host.bootstrap;
 
-import com.host.model.repository.ReservationRepository;
-import com.host.model.repository.TableRepository;
-import com.host.model.repository.UserRepository;
+import com.reservation_system.host.model.repository.ReservationRepository;
+import com.reservation_system.host.model.repository.TableRepository;
+import com.reservation_system.host.model.repository.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

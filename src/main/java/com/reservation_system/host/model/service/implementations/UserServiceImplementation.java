@@ -1,8 +1,8 @@
-package com.host.model.service.implementations;
+package com.reservation_system.host.model.service.implementations;
 
-import com.host.model.entity.UserEntity;
-import com.host.model.repository.UserRepository;
-import com.host.model.service.interfaces.UserService;
+import com.reservation_system.host.model.entity.UserEntity;
+import com.reservation_system.host.model.repository.UserRepository;
+import com.reservation_system.host.model.service.interfaces.UserService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

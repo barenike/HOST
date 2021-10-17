@@ -1,9 +1,8 @@
-package com.host.model.entity;
+package com.reservation_system.host.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.util.Date;
 import java.util.Objects;
 import java.util.UUID;
@@ -12,23 +11,24 @@ import java.util.UUID;
 @Table(name = "reservations")
 public class ReservationEntity {
     @Id
-    @Column(name = "reservation_id")
-    private UUID reservationId; // Будем генерировать при создании объекта: UUID uuid = UUID.randomUUID();
+    @Column(unique = true, name = "reservation_id", nullable = false)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private UUID reservationId;
 
-    @Column(name = "user_id")
+    @Column(name = "user_id", nullable = false)
     private UUID userId;
 
-    @Column(name = "table_id")
+    @Column(name = "table_id", nullable = false)
     private UUID tableId;
 
-    @Column(name = "begin_date")
+    @Column(name = "begin_date", nullable = false)
     private Date beginDate;
 
-    @Column(name = "end_date")
+    @Column(name = "end_date", nullable = false)
     private Date endDate;
 
-    public ReservationEntity(UUID reservationId, UUID userId, UUID tableId, Date beginDate, Date endDate) {
-        this.reservationId = reservationId;
+    public ReservationEntity(UUID userId, UUID tableId, Date beginDate, Date endDate) {
         this.userId = userId;
         this.tableId = tableId;
         this.beginDate = beginDate;

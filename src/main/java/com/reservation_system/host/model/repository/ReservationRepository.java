@@ -1,6 +1,6 @@
-package com.host.model.repository;
+package com.reservation_system.host.model.repository;
 
-import com.host.model.entity.ReservationEntity;
+import com.reservation_system.host.model.entity.ReservationEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

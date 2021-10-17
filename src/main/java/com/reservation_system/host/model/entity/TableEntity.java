@@ -1,9 +1,8 @@
-package com.host.model.entity;
+package com.reservation_system.host.model.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -11,22 +10,23 @@ import java.util.UUID;
 @Table(name = "tables")
 public class TableEntity {
     @Id
-    @Column(name = "table_id")
-    private UUID tableId; // Будем генерировать при создании объекта: UUID uuid = UUID.randomUUID();
+    @Column(unique = true, name = "table_id", nullable = false)
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private UUID tableId;
 
-    @Column(name = "is_available")
+    @Column(name = "is_available", nullable = false)
     private boolean isAvailable;
 
     @Column(name = "description")
     private String description;
 
-    public TableEntity(UUID tableId, boolean isAvailable) {
-        this.tableId = tableId;
+    public TableEntity(boolean isAvailable) {
+        this.tableId = UUID.randomUUID();
         this.isAvailable = isAvailable;
     }
 
-    public TableEntity(UUID tableId, boolean isAvailable, String description) {
-        this.tableId = tableId;
+    public TableEntity(boolean isAvailable, String description) {
         this.isAvailable = isAvailable;
         this.description = description;
     }

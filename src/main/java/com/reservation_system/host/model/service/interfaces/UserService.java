@@ -1,6 +1,6 @@
-package com.host.model.service.interfaces;
+package com.reservation_system.host.model.service.interfaces;
 
-import com.host.model.entity.UserEntity;
+import com.reservation_system.host.model.entity.UserEntity;
 
 import java.util.List;
 import java.util.UUID;

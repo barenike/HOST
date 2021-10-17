@@ -1,8 +1,8 @@
-package com.host.model.service.implementations;
+package com.reservation_system.host.model.service.implementations;
 
-import com.host.model.entity.TableEntity;
-import com.host.model.repository.TableRepository;
-import com.host.model.service.interfaces.TableService;
+import com.reservation_system.host.model.entity.TableEntity;
+import com.reservation_system.host.model.repository.TableRepository;
+import com.reservation_system.host.model.service.interfaces.TableService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

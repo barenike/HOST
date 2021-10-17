@@ -1,4 +1,4 @@
-package com.host;
+package com.reservation_system.host;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

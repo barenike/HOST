@@ -1,9 +1,9 @@
-package com.host.controller;
+package com.reservation_system.host.controller;
 
-import com.host.model.entity.UserEntity;
-import com.host.model.repository.UserRepository;
-import com.host.model.service.implementations.UserServiceImplementation;
-import com.host.model.service.interfaces.UserService;
+import com.reservation_system.host.model.entity.UserEntity;
+import com.reservation_system.host.model.repository.UserRepository;
+import com.reservation_system.host.model.service.implementations.UserServiceImplementation;
+import com.reservation_system.host.model.service.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,18 +13,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping(value = "/users")
 public class UserController {
-    private final UserRepository userRepository;
     private final UserService userService;
 
     @Autowired
     public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
-        this.userService = new UserServiceImplementation(this.userRepository);
+        this.userService = new UserServiceImplementation(userRepository);
     }
 
-    @PostMapping(value = "/users")
+    @PostMapping(value = "/registration")
     public ResponseEntity<?> createUser(@RequestBody UserEntity user) {
         try {
             userService.create(user);
