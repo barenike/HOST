@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/tables")
 public class TableController {
+
     private final TableService tableService;
 
     @Autowired

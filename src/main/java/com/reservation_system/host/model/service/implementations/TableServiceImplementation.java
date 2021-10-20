@@ -36,7 +36,7 @@ public class TableServiceImplementation implements TableService {
     public boolean update(TableEntity table, UUID id) {
         if (tableRepository.existsById(id)) {
             table.setTableId(id);
-            tableRepository.save(table);
+            create(table);
             return true;
         }
         return false;

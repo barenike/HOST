@@ -36,7 +36,7 @@ public class ReservationServiceImplementation implements ReservationService {
     public boolean update(ReservationEntity reservation, UUID id) {
         if (reservationRepository.existsById(id)) {
             reservation.setReservationId(id);
-            reservationRepository.save(reservation);
+            create(reservation);
             return true;
         }
         return false;

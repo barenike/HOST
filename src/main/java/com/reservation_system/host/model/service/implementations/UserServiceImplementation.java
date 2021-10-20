@@ -36,7 +36,7 @@ public class UserServiceImplementation implements UserService {
     public boolean update(UserEntity user, UUID id) {
         if (userRepository.existsById(id)) {
             user.setUserId(id);
-            userRepository.save(user);
+            create(user);
             return true;
         }
         return false;
