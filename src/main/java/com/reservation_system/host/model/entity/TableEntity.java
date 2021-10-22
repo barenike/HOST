@@ -9,6 +9,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "tables")
 public class TableEntity {
+
     @Id
     @Column(unique = true, name = "table_id", nullable = false)
     @GeneratedValue(generator = "uuid")
@@ -20,11 +21,6 @@ public class TableEntity {
 
     @Column(name = "description")
     private String description;
-
-    public TableEntity(boolean isAvailable) {
-        this.tableId = UUID.randomUUID();
-        this.isAvailable = isAvailable;
-    }
 
     public TableEntity(boolean isAvailable, String description) {
         this.isAvailable = isAvailable;
@@ -59,6 +55,7 @@ public class TableEntity {
         this.description = description;
     }
 
+    //Пусть будет - пригодится
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

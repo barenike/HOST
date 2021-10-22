@@ -9,6 +9,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "users")
 public class UserEntity {
+
     @Id
     @Column(unique = true, name = "user_id", nullable = false)
     @GeneratedValue(generator = "uuid")
@@ -21,19 +22,14 @@ public class UserEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "is_admin", nullable = false)
-    private boolean isAdmin;
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private RoleEntity roleEntity;
 
-    public UserEntity(String login, String password) {
+    public UserEntity(String login, String password, RoleEntity roleEntity) {
         this.login = login;
         this.password = password;
-        this.isAdmin = false;
-    }
-
-    public UserEntity(String login, String password, boolean isAdmin) {
-        this.login = login;
-        this.password = password;
-        this.isAdmin = isAdmin;
+        this.roleEntity = roleEntity;
     }
 
     public UserEntity() {
@@ -64,12 +60,12 @@ public class UserEntity {
         this.password = password;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public RoleEntity getRoleEntity() {
+        return roleEntity;
     }
 
-    public void setAdmin(boolean admin) {
-        isAdmin = admin;
+    public void setRoleEntity(RoleEntity roleEntity) {
+        this.roleEntity = roleEntity;
     }
 
     //Пусть будет - пригодится

@@ -10,6 +10,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "reservations")
 public class ReservationEntity {
+
     @Id
     @Column(unique = true, name = "reservation_id", nullable = false)
     @GeneratedValue(generator = "uuid")
@@ -79,6 +80,7 @@ public class ReservationEntity {
         this.endDate = endDate;
     }
 
+    //Пусть будет - пригодится
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,0 +1,66 @@
+package com.reservation_system.host.model.service;
+
+import com.reservation_system.host.model.entity.RoleEntity;
+import com.reservation_system.host.model.entity.UserEntity;
+import com.reservation_system.host.model.repository.RoleRepository;
+import com.reservation_system.host.model.repository.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public void create(UserEntity user) {
+        RoleEntity userRole = roleRepository.findByName("ROLE_USER");
+        user.setRoleEntity(userRole);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
+
+    public List<UserEntity> readAll() {
+        return userRepository.findAll();
+    }
+
+    public UserEntity read(UUID id) {
+        return userRepository.getById(id);
+    }
+
+    public UserEntity findByLogin(String login) {
+        return userRepository.findByLogin(login);
+    }
+
+    public UserEntity findByLoginAndPassword(String login, String password) {
+        UserEntity user = findByLogin(login);
+        return user != null && passwordEncoder.matches(password, user.getPassword()) ? user : null;
+    }
+
+    public boolean update(UserEntity user, UUID id) {
+        if (userRepository.existsById(id)) {
+            user.setUserId(id);
+            create(user);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean delete(UUID id) {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+}
