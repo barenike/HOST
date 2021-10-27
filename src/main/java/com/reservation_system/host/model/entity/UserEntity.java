@@ -5,6 +5,8 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Entity
 @Table(name = "users")
@@ -48,16 +50,34 @@ public class UserEntity {
         return email;
     }
 
-    public void setEmail(String login) {
-        this.email = login;
+    // replace IllegalArgumentException on a more suitable type of Exception.
+    // Custom IllegalEmailException + proper catch in the UserController
+    public void setEmail(String email) throws IllegalArgumentException {
+        final String regex = "[\\w!#$%&'.*+/=?^`{|}~-]*@hostco\\.ru";
+        final Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
+        final Matcher matcher = pattern.matcher(email);
+        if (matcher.find()) {
+            this.email = email;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    // replace IllegalArgumentException on a more suitable type of Exception.
+    // IllegalPasswordException + proper catch in the UserController
+    public void setPassword(String password) throws IllegalArgumentException {
+        final String regex = "(?=.*?[a-z])(?=.*?[A-Z])(?=.*?\\d)\\S{8,}";
+        final Pattern pattern = Pattern.compile(regex, Pattern.DOTALL);
+        final Matcher matcher = pattern.matcher(password);
+        if (matcher.find()) {
+            this.password = password;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public RoleEntity getRoleEntity() {

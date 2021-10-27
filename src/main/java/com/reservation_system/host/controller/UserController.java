@@ -28,8 +28,8 @@ public class UserController {
     public ResponseEntity<?> registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
         try {
             UserEntity user = new UserEntity();
-            user.setPassword(registrationRequest.getPassword());
             user.setEmail(registrationRequest.getEmail());
+            user.setPassword(registrationRequest.getPassword());
             userService.create(user);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
@@ -38,9 +38,17 @@ public class UserController {
     }
 
     @PostMapping("/auth")
-    public AuthResponse auth(@RequestBody AuthRequest request) {
-        UserEntity userEntity = userService.findByEmailAndPassword(request.getEmail(), request.getPassword());
-        String token = jwtProvider.generateToken(String.valueOf(userEntity.getUserId()));
-        return new AuthResponse(token);
+    public ResponseEntity<AuthResponse> auth(@RequestBody AuthRequest request) {
+        try {
+            UserEntity userEntity = userService.findByEmailAndPassword(request.getEmail(), request.getPassword());
+            if (userEntity != null) {
+                String token = jwtProvider.generateToken(String.valueOf(userEntity.getUserId()));
+                return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new AuthResponse(null), HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }
