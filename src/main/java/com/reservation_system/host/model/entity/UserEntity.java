@@ -16,8 +16,8 @@ public class UserEntity {
     @GenericGenerator(name = "uuid", strategy = "uuid2")
     private UUID userId;
 
-    @Column(name = "login", nullable = false)
-    private String login;
+    @Column(name = "email", nullable = false)
+    private String email;
 
     @Column(name = "password", nullable = false)
     private String password;
@@ -26,8 +26,8 @@ public class UserEntity {
     @JoinColumn(name = "role_id", nullable = false)
     private RoleEntity roleEntity;
 
-    public UserEntity(String login, String password, RoleEntity roleEntity) {
-        this.login = login;
+    public UserEntity(String email, String password, RoleEntity roleEntity) {
+        this.email = email;
         this.password = password;
         this.roleEntity = roleEntity;
     }
@@ -44,12 +44,12 @@ public class UserEntity {
         this.userId = userId;
     }
 
-    public String getLogin() {
-        return login;
+    public String getEmail() {
+        return email;
     }
 
-    public void setLogin(String login) {
-        this.login = login;
+    public void setEmail(String login) {
+        this.email = login;
     }
 
     public String getPassword() {

@@ -38,12 +38,12 @@ public class UserService {
         return userRepository.getById(id);
     }
 
-    public UserEntity findByLogin(String login) {
-        return userRepository.findByLogin(login);
+    public UserEntity findByEmail(String login) {
+        return userRepository.findByEmail(login);
     }
 
-    public UserEntity findByLoginAndPassword(String login, String password) {
-        UserEntity user = findByLogin(login);
+    public UserEntity findByEmailAndPassword(String login, String password) {
+        UserEntity user = findByEmail(login);
         return user != null && passwordEncoder.matches(password, user.getPassword()) ? user : null;
     }
 

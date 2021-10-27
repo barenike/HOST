@@ -1,4 +1,4 @@
-package com.reservation_system.host.controller.users;
+package com.reservation_system.host.infrastructure;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

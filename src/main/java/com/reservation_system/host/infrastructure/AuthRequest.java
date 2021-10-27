@@ -1,10 +1,10 @@
-package com.reservation_system.host.controller.users;
+package com.reservation_system.host.infrastructure;
 
 import lombok.Data;
 
 @Data
 public class AuthRequest {
 
-    private String login;
+    private String email;
     private String password;
 }

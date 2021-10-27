@@ -1,6 +1,9 @@
-package com.reservation_system.host.controller.users;
+package com.reservation_system.host.controller;
 
 import com.reservation_system.host.configuration.jwt.JwtProvider;
+import com.reservation_system.host.infrastructure.AuthRequest;
+import com.reservation_system.host.infrastructure.AuthResponse;
+import com.reservation_system.host.infrastructure.RegistrationRequest;
 import com.reservation_system.host.model.entity.UserEntity;
 import com.reservation_system.host.model.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -26,7 +29,7 @@ public class UserController {
         try {
             UserEntity user = new UserEntity();
             user.setPassword(registrationRequest.getPassword());
-            user.setLogin(registrationRequest.getLogin());
+            user.setEmail(registrationRequest.getEmail());
             userService.create(user);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
@@ -36,8 +39,8 @@ public class UserController {
 
     @PostMapping("/auth")
     public AuthResponse auth(@RequestBody AuthRequest request) {
-        UserEntity userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
-        String token = jwtProvider.generateToken(userEntity.getLogin());
+        UserEntity userEntity = userService.findByEmailAndPassword(request.getEmail(), request.getPassword());
+        String token = jwtProvider.generateToken(userEntity.getEmail());
         return new AuthResponse(token);
     }
 }

@@ -1,4 +1,4 @@
-package com.reservation_system.host.controller.reservations;
+package com.reservation_system.host.controller;
 
 import com.reservation_system.host.model.entity.ReservationEntity;
 import com.reservation_system.host.model.service.ReservationService;
