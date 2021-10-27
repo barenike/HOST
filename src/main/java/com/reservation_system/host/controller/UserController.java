@@ -40,7 +40,7 @@ public class UserController {
     @PostMapping("/auth")
     public AuthResponse auth(@RequestBody AuthRequest request) {
         UserEntity userEntity = userService.findByEmailAndPassword(request.getEmail(), request.getPassword());
-        String token = jwtProvider.generateToken(userEntity.getEmail());
+        String token = jwtProvider.generateToken(String.valueOf(userEntity.getUserId()));
         return new AuthResponse(token);
     }
 }
