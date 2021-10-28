@@ -1,9 +1,6 @@
 package com.reservation_system.host.model.entity;
 
-import org.hibernate.annotations.GenericGenerator;
-
 import javax.persistence.*;
-import java.util.UUID;
 
 @Entity
 @Table(name = "roles")
@@ -11,18 +8,17 @@ public class RoleEntity {
 
     @Id
     @Column(unique = true, name = "role_id", nullable = false)
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
-    private UUID roleId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer roleId;
 
     @Column(name = "name", nullable = false)
     private String name;
 
-    public UUID getRoleId() {
+    public Integer getRoleId() {
         return roleId;
     }
 
-    public void setRoleId(UUID roleId) {
+    public void setRoleId(Integer roleId) {
         this.roleId = roleId;
     }
 

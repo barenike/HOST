@@ -4,7 +4,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -21,7 +20,7 @@ public class ReservationEntity {
     private UUID userId;
 
     @Column(name = "table_id", nullable = false)
-    private UUID tableId;
+    private Integer tableId;
 
     @Column(name = "begin_date", nullable = false)
     private Date beginDate;
@@ -29,7 +28,7 @@ public class ReservationEntity {
     @Column(name = "end_date", nullable = false)
     private Date endDate;
 
-    public ReservationEntity(UUID userId, UUID tableId, Date beginDate, Date endDate) {
+    public ReservationEntity(UUID userId, Integer tableId, Date beginDate, Date endDate) {
         this.userId = userId;
         this.tableId = tableId;
         this.beginDate = beginDate;
@@ -56,11 +55,11 @@ public class ReservationEntity {
         this.userId = userId;
     }
 
-    public UUID getTableId() {
+    public Integer getTableId() {
         return tableId;
     }
 
-    public void setTableId(UUID tableId) {
+    public void setTableId(Integer tableId) {
         this.tableId = tableId;
     }
 
@@ -78,21 +77,5 @@ public class ReservationEntity {
 
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
-    }
-
-    //Пусть будет - пригодится
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        ReservationEntity that = (ReservationEntity) o;
-
-        return Objects.equals(reservationId, that.reservationId);
-    }
-
-    @Override
-    public int hashCode() {
-        return reservationId != null ? reservationId.hashCode() : 0;
     }
 }

@@ -34,8 +34,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public UserEntity read(UUID id) {
-        return userRepository.getById(id);
+    public UserEntity read(UUID userId) {
+        return userRepository.getById(userId);
     }
 
     public UserEntity findByUserId(String userId) {
@@ -51,18 +51,18 @@ public class UserService {
         return user != null && passwordEncoder.matches(password, user.getPassword()) ? user : null;
     }
 
-    public boolean update(UserEntity user, UUID id) {
-        if (userRepository.existsById(id)) {
-            user.setUserId(id);
+    public boolean update(UserEntity user, UUID userId) {
+        if (userRepository.existsById(userId)) {
+            user.setUserId(userId);
             create(user);
             return true;
         }
         return false;
     }
 
-    public boolean delete(UUID id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
+    public boolean delete(UUID userId) {
+        if (userRepository.existsById(userId)) {
+            userRepository.deleteById(userId);
             return true;
         }
         return false;
