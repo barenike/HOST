@@ -1,6 +1,9 @@
-package com.reservation_system.host.controller.users;
+package com.reservation_system.host.controller;
 
 import com.reservation_system.host.configuration.jwt.JwtProvider;
+import com.reservation_system.host.infrastructure.AuthRequest;
+import com.reservation_system.host.infrastructure.AuthResponse;
+import com.reservation_system.host.infrastructure.RegistrationRequest;
 import com.reservation_system.host.model.entity.UserEntity;
 import com.reservation_system.host.model.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -32,19 +35,29 @@ public class UserController {
             }
 
             UserEntity user = new UserEntity();
+            user.setEmail(registrationRequest.getEmail());
             user.setPassword(registrationRequest.getPassword());
-            user.setLogin(registrationRequest.getLogin());
             userService.create(user);
             return new ResponseEntity<>(HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping("/auth")
-    public AuthResponse auth(@RequestBody AuthRequest request) {
-        UserEntity userEntity = userService.findByLoginAndPassword(request.getLogin(), request.getPassword());
-        String token = jwtProvider.generateToken(userEntity.getLogin());
-        return new AuthResponse(token);
+    public ResponseEntity<AuthResponse> auth(@RequestBody AuthRequest request) {
+        try {
+            UserEntity userEntity = userService.findByEmailAndPassword(request.getEmail(), request.getPassword());
+            if (userEntity != null) {
+                String token = jwtProvider.generateToken(String.valueOf(userEntity.getUserId()));
+                return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(new AuthResponse(null), HttpStatus.UNAUTHORIZED);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
     }
 }

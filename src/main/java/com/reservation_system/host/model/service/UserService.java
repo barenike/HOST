@@ -34,31 +34,35 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public UserEntity read(UUID id) {
-        return userRepository.getById(id);
+    public UserEntity read(UUID userId) {
+        return userRepository.getById(userId);
     }
 
-    public UserEntity findByLogin(String login) {
-        return userRepository.findByLogin(login);
+    public UserEntity findByUserId(String userId) {
+        return userRepository.findByUserId(UUID.fromString(userId));
     }
 
-    public UserEntity findByLoginAndPassword(String login, String password) {
-        UserEntity user = findByLogin(login);
+    public UserEntity findByEmail(String email) {
+        return userRepository.findByEmail(email);
+    }
+
+    public UserEntity findByEmailAndPassword(String email, String password) {
+        UserEntity user = findByEmail(email);
         return user != null && passwordEncoder.matches(password, user.getPassword()) ? user : null;
     }
 
-    public boolean update(UserEntity user, UUID id) {
-        if (userRepository.existsById(id)) {
-            user.setUserId(id);
+    public boolean update(UserEntity user, UUID userId) {
+        if (userRepository.existsById(userId)) {
+            user.setUserId(userId);
             create(user);
             return true;
         }
         return false;
     }
 
-    public boolean delete(UUID id) {
-        if (userRepository.existsById(id)) {
-            userRepository.deleteById(id);
+    public boolean delete(UUID userId) {
+        if (userRepository.existsById(userId)) {
+            userRepository.deleteById(userId);
             return true;
         }
         return false;

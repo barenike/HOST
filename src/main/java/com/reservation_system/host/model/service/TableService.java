@@ -5,7 +5,6 @@ import com.reservation_system.host.model.repository.TableRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class TableService {
@@ -24,22 +23,22 @@ public class TableService {
         return tableRepository.findAll();
     }
 
-    public TableEntity read(UUID id) {
-        return tableRepository.getById(id);
+    public TableEntity read(Integer tableId) {
+        return tableRepository.getById(tableId);
     }
 
-    public boolean update(TableEntity table, UUID id) {
-        if (tableRepository.existsById(id)) {
-            table.setTableId(id);
+    public boolean update(TableEntity table, Integer tableId) {
+        if (tableRepository.existsById(tableId)) {
+            table.setTableId(tableId);
             create(table);
             return true;
         }
         return false;
     }
 
-    public boolean delete(UUID id) {
-        if (tableRepository.existsById(id)) {
-            tableRepository.deleteById(id);
+    public boolean delete(Integer tableId) {
+        if (tableRepository.existsById(tableId)) {
+            tableRepository.deleteById(tableId);
             return true;
         }
         return false;

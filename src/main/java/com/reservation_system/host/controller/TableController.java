@@ -1,4 +1,4 @@
-package com.reservation_system.host.controller.tables;
+package com.reservation_system.host.controller;
 
 import com.reservation_system.host.model.entity.TableEntity;
 import com.reservation_system.host.model.service.TableService;
