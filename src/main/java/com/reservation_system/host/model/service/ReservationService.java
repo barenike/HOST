@@ -27,11 +27,13 @@ public class ReservationService {
     public ReservationEntity getReservationById(UUID reservationId) {
         return reservationRepository.getById(reservationId);
     }
+
     /*
     public List<ReservationEntity> getReservationsByTableId(String userId) {
         return reservationRepository.findAll()
     }
     */
+
     public ReservationEntity getMyReservationById(UUID reservationId, String userId) throws AccessDeniedException {
         ReservationEntity reservation = getReservationById(reservationId);
         if (reservation == null) {
