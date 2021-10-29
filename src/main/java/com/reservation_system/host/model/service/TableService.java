@@ -1,10 +1,11 @@
 package com.reservation_system.host.model.service;
 
+import com.reservation_system.host.model.entity.ReservationEntity;
 import com.reservation_system.host.model.entity.TableEntity;
 import com.reservation_system.host.model.repository.TableRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.*;
 
 @Service
 public class TableService {
@@ -42,5 +43,19 @@ public class TableService {
             return true;
         }
         return false;
+    }
+
+    public Map<TableEntity,Integer> getTablesWithStatus(List<TableEntity> tables, Date beginDate, Date endDate){
+        Map<TableEntity,Integer> result = new HashMap<TableEntity,Integer>();
+
+        for(TableEntity table : tables){
+            if (!table.isAvailable()){
+                result.put(table, 3);
+            }
+            ArrayList<ReservationEntity> reservations = ReservationService.getReservationsOnTableByDate(table.getTableId(), beginDate);
+            //не работает, посмотреть как использовать тут этот метод и дописать логику проверки
+        }
+        return result;
+
     }
 }
