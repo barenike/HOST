@@ -5,9 +5,7 @@ import com.reservation_system.host.model.repository.ReservationRepository;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 public class ReservationService {
@@ -29,7 +27,11 @@ public class ReservationService {
     public ReservationEntity getReservationById(UUID reservationId) {
         return reservationRepository.getById(reservationId);
     }
-
+    /*
+    public List<ReservationEntity> getReservationsByTableId(String userId) {
+        return reservationRepository.findAll()
+    }
+    */
     public ReservationEntity getMyReservationById(UUID reservationId, String userId) throws AccessDeniedException {
         ReservationEntity reservation = getReservationById(reservationId);
         if (reservation == null) {
@@ -53,6 +55,29 @@ public class ReservationService {
             }
         }
         return targetedReservations;
+    }
+
+    public List<ReservationEntity> getReservationsByDate(Date date){
+        List<ReservationEntity> allReservations = getAllReservations();
+
+        if (allReservations == null) {
+            return null;
+        }
+        Calendar c1 = Calendar.getInstance();
+        c1.setTime(date);
+
+        ArrayList<ReservationEntity> result = new ArrayList<>();
+        for (ReservationEntity reservation : allReservations) {
+            Calendar c2 = Calendar.getInstance();
+            c2.setTime(reservation.getBeginDate());
+
+            if (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR) &&
+                    c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH) &&
+                    c1.get(Calendar.DAY_OF_MONTH) == c2.get(Calendar.DAY_OF_MONTH)){
+                result.add(reservation);
+            }
+        }
+        return result;
     }
 
     public boolean update(ReservationEntity reservation, UUID reservationId) {
