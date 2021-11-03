@@ -1,6 +1,7 @@
 package com.reservation_system.host.controller;
 
 import com.reservation_system.host.configuration.jwt.JwtProvider;
+import com.reservation_system.host.infrastructure.ReservationRequest;
 import com.reservation_system.host.model.entity.ReservationEntity;
 import com.reservation_system.host.model.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,17 +27,18 @@ public class ReservationController {
 
     @PostMapping(value = "/user/reservations")
     public ResponseEntity<HttpStatus> createMyReservation(
-            @RequestBody ReservationEntity reservation,
+            @RequestBody ReservationRequest reservationRequest,
             @RequestHeader (name = "Authorization") String token
     ) {
         try {
             String userId = jwtProvider.getUserIdFromToken(token.substring(7));
-            if (reservation.getUserId().toString().equals(userId)) {
-                reservationService.createReservation(reservation);
-                return new ResponseEntity<>(HttpStatus.CREATED);
-            } else {
-                return new ResponseEntity<>(HttpStatus.FORBIDDEN);
-            }
+            ReservationEntity reservation = new ReservationEntity();
+            reservation.setUserId(UUID.fromString(userId));
+            reservation.setTableId(reservationRequest.getTableId());
+            reservation.setBeginDate(reservationRequest.getBeginDate());
+            reservation.setEndDate(reservationRequest.getEndDate());
+            reservationService.createReservation(reservation);
+            return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
