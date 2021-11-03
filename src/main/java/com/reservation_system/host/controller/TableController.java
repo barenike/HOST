@@ -3,7 +3,6 @@ package com.reservation_system.host.controller;
 import com.reservation_system.host.infrastructure.ReservationDates;
 import com.reservation_system.host.model.entity.TableEntity;
 import com.reservation_system.host.model.entity.TableStatusEnum;
-import com.reservation_system.host.model.service.ReservationService;
 import com.reservation_system.host.model.service.TableService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,21 +17,19 @@ import java.util.Map;
 public class TableController {
 
     private final TableService tableService;
-    private final ReservationService reservationService;
 
-    public TableController(TableService tableService, ReservationService reservationService) {
+    public TableController(TableService tableService) {
         this.tableService = tableService;
-        this.reservationService = reservationService;
     }
-    //Доделать
+
     @GetMapping(value = "/user/tables")
-    public ResponseEntity<Map<TableEntity, TableStatusEnum>> getTableMap(@RequestBody ReservationDates reservationDates) {
+    public ResponseEntity<Map<Integer, TableStatusEnum>> getTableMap(@RequestBody ReservationDates reservationDates) {
         try {
             final List<TableEntity> tables = tableService.readAll();
             if (tables == null || tables.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            Map<TableEntity, TableStatusEnum> tableMap = reservationService.getTablesWithStatus(tables, reservationDates.getBeginDate(), reservationDates.getEndDate());
+            Map<Integer, TableStatusEnum> tableMap = tableService.getTablesWithStatus(tables, reservationDates.getBeginDate(), reservationDates.getEndDate());
             return new ResponseEntity<>(tableMap, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
