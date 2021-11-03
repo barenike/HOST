@@ -111,4 +111,30 @@ public class ReservationService {
             throw new AccessDeniedException("Forbidden");
         }
     }
+
+    public List<ReservationEntity> getReservationsByTableId(Integer tableId) {
+        List<ReservationEntity> allReservations = getAllReservations();
+        List<ReservationEntity> targetedReservations = new ArrayList<>();
+        for (ReservationEntity reservation : allReservations) {
+            if (Objects.equals(reservation.getTableId(), tableId)) {
+                targetedReservations.add(reservation);
+            }
+        }
+        return targetedReservations;
+    }
+
+    public List<ReservationEntity> getReservationsOnTableByDate(Integer tableId, Date date) {
+        List<ReservationEntity> allReservations = getReservationsByTableId(tableId);
+        if (allReservations.isEmpty()) {
+            return allReservations;
+        }
+        List<ReservationEntity> targetedReservations = new ArrayList<>();
+        for (ReservationEntity reservation : allReservations) {
+            boolean isSameDay = DateUtils.isSameDay(reservation.getBeginDate(), date);
+            if (isSameDay) {
+                targetedReservations.add(reservation);
+            }
+        }
+        return targetedReservations;
+    }
 }

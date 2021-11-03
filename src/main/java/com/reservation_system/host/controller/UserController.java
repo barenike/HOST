@@ -47,7 +47,7 @@ public class UserController {
                 String token = jwtProvider.generateToken(String.valueOf(userEntity.getUserId()));
                 return new ResponseEntity<>(new AuthResponse(token), HttpStatus.OK);
             } else {
-                return new ResponseEntity<>(new AuthResponse(null), HttpStatus.UNAUTHORIZED);
+                return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
