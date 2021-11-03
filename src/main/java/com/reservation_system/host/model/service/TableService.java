@@ -12,12 +12,13 @@ import java.util.*;
 @Service
 public class TableService {
 
-    ReservationService reservationService;
+    private final ReservationService reservationService;
 
     private final TableRepository tableRepository;
 
-    public TableService(TableRepository tableRepository) {
+    public TableService(TableRepository tableRepository, ReservationService reservationService) {
         this.tableRepository = tableRepository;
+        this.reservationService = reservationService;
     }
 
     public void create(TableEntity table) {
@@ -52,16 +53,16 @@ public class TableService {
     public Map<Integer,TableStatusEnum> getTablesWithStatus(Date beginDate, Date endDate){
         Map<Integer,TableStatusEnum> result = new HashMap<Integer,TableStatusEnum>();
 
-        for(TableEntity table : readAll()){
-            if (!table.isAvailable()){
-                result.put(table.getTableId().toString(), Status.UNAVAILABLE.toString());
+        for(TableEntity table : readAll()) {
+            if (!table.isAvailable()) {
+                result.put(table.getTableId(), TableStatusEnum.UNAVAILABLE);
                 continue;
             }
             ArrayList<ReservationEntity> reservations = (ArrayList<ReservationEntity>)
                     reservationService.getReservationsOnTableByDate(table.getTableId().toString(), beginDate);
 
-            if (reservations == null || reservations.isEmpty()){
-                result.put(table.getTableId().toString(), Status.FREE.toString());
+            if (reservations == null || reservations.isEmpty()) {
+                result.put(table.getTableId(), TableStatusEnum.AVAILABLE);
                 continue;
             }
 
@@ -76,7 +77,6 @@ public class TableService {
             }
         }
         return result;
-
     }
 
     public Date strToDate(String date) throws ParseException {
