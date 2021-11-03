@@ -17,11 +17,6 @@ public class TableEntity {
     @Column(name = "description")
     private String description;
 
-    public TableEntity(boolean isAvailable, String description) {
-        this.isAvailable = isAvailable;
-        this.description = description;
-    }
-
     public TableEntity() {
 
     }

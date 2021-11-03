@@ -5,16 +5,17 @@ import com.reservation_system.host.model.entity.TableEntity;
 import com.reservation_system.host.model.entity.TableStatusEnum;
 import com.reservation_system.host.model.repository.TableRepository;
 import org.springframework.stereotype.Service;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class TableService {
 
-    private final ReservationService reservationService;
-
     private final TableRepository tableRepository;
+    private final ReservationService reservationService;
 
     public TableService(TableRepository tableRepository, ReservationService reservationService) {
         this.tableRepository = tableRepository;
@@ -50,38 +51,28 @@ public class TableService {
         return false;
     }
 
-    public Map<Integer,TableStatusEnum> getTablesWithStatus(Date beginDate, Date endDate){
-        Map<Integer,TableStatusEnum> result = new HashMap<Integer,TableStatusEnum>();
-
-        for(TableEntity table : readAll()) {
+    public Map<Integer, TableStatusEnum> getTablesWithStatus(List<TableEntity> tables, Date beginDate, Date endDate) {
+        Map<Integer, TableStatusEnum> result = new HashMap<>();
+        for (TableEntity table: tables) {
+            result.put(table.getTableId(), TableStatusEnum.AVAILABLE);
+        }
+        for (TableEntity table : tables) {
             if (!table.isAvailable()) {
                 result.put(table.getTableId(), TableStatusEnum.UNAVAILABLE);
-                continue;
-            }
-            ArrayList<ReservationEntity> reservations = (ArrayList<ReservationEntity>)
-                    reservationService.getReservationsOnTableByDate(table.getTableId().toString(), beginDate);
-
-            if (reservations == null || reservations.isEmpty()) {
-                result.put(table.getTableId(), TableStatusEnum.AVAILABLE);
-                continue;
-            }
-
-            for(ReservationEntity reservation : reservations) {
-                if ((beginDate.getTime() >= reservation.getBeginDate().getTime() && beginDate.getTime() <= reservation.getEndDate().getTime())
-                        || (endDate.getTime() >= reservation.getBeginDate().getTime() && endDate.getTime() <= reservation.getEndDate().getTime())
-                        || (beginDate.getTime() < reservation.getBeginDate().getTime() && endDate.getTime() > reservation.getEndDate().getTime())) {
-                    result.put(table.getTableId(), TableStatusEnum.RESERVED);
-                } else {
-                    result.put(table.getTableId(), TableStatusEnum.AVAILABLE);
+            } else {
+                List<ReservationEntity> reservations = reservationService.getReservationsOnTableByDate(table.getTableId(), beginDate);
+                if (reservations.isEmpty()) {
+                    continue;
+                }
+                for (ReservationEntity reservation : reservations) {
+                    if ((beginDate.getTime() >= reservation.getBeginDate().getTime() && beginDate.getTime() <= reservation.getEndDate().getTime())
+                            || (endDate.getTime() >= reservation.getBeginDate().getTime() && endDate.getTime() <= reservation.getEndDate().getTime())
+                            || (beginDate.getTime() < reservation.getBeginDate().getTime() && endDate.getTime() > reservation.getEndDate().getTime())) {
+                        result.put(table.getTableId(), TableStatusEnum.RESERVED);
+                    }
                 }
             }
         }
         return result;
     }
-
-    public Date strToDate(String date) throws ParseException {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-        return formatter.parse(date);
-    }
-
 }

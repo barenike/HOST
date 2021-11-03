@@ -27,12 +27,6 @@ public class UserEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    public UserEntity(String email, String password, RoleEntity roleEntity) {
-        this.email = email;
-        this.password = password;
-        this.roleEntity = roleEntity;
-    }
-
     public UserEntity() {
 
     }

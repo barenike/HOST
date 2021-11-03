@@ -3,7 +3,7 @@ package com.reservation_system.host.model.entity;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.UUID;
 
 @Entity
@@ -23,19 +23,12 @@ public class ReservationEntity {
     private Integer tableId;
 
     @Column(name = "begin_date", nullable = false)
-    private Timestamp beginDate;
+    private Date beginDate;
 
     @Column(name = "end_date", nullable = false)
-    private Timestamp endDate;
+    private Date endDate;
 
     public ReservationEntity() {
-    }
-
-    public ReservationEntity(UUID userId, Integer tableId, Timestamp beginDate, Timestamp endDate) {
-        this.userId = userId;
-        this.tableId = tableId;
-        this.beginDate = beginDate;
-        this.endDate = endDate;
     }
 
     public UUID getReservationId() {
@@ -62,19 +55,19 @@ public class ReservationEntity {
         this.tableId = tableId;
     }
 
-    public Timestamp getBeginDate() {
+    public Date getBeginDate() {
         return beginDate;
     }
 
-    public void setBeginDate(Timestamp beginDate) {
+    public void setBeginDate(Date beginDate) {
         this.beginDate = beginDate;
     }
 
-    public Timestamp getEndDate() {
+    public Date getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Timestamp endDate) {
+    public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
 }
