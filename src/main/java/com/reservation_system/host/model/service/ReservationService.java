@@ -2,6 +2,7 @@ package com.reservation_system.host.model.service;
 
 import com.reservation_system.host.model.entity.ReservationEntity;
 import com.reservation_system.host.model.repository.ReservationRepository;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
@@ -73,17 +74,10 @@ public class ReservationService {
         if (allReservations == null) {
             return null;
         }
-        Calendar c1 = Calendar.getInstance();
-        c1.setTime(date);
 
         ArrayList<ReservationEntity> result = new ArrayList<>();
         for (ReservationEntity reservation : allReservations) {
-            Calendar c2 = Calendar.getInstance();
-            c2.setTime(reservation.getBeginDate());
-
-            if (c1.get(Calendar.YEAR) == c2.get(Calendar.YEAR) &&
-                    c1.get(Calendar.MONTH) == c2.get(Calendar.MONTH) &&
-                    c1.get(Calendar.DAY_OF_MONTH) == c2.get(Calendar.DAY_OF_MONTH)){
+            if (DateUtils.isSameDay(reservation.getBeginDate(), date)) {
                 result.add(reservation);
             }
         }

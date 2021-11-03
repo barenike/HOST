@@ -2,9 +2,9 @@ package com.reservation_system.host.model.service;
 
 import com.reservation_system.host.model.entity.ReservationEntity;
 import com.reservation_system.host.model.entity.TableEntity;
+import com.reservation_system.host.model.entity.TableStatusEnum;
 import com.reservation_system.host.model.repository.TableRepository;
 import org.springframework.stereotype.Service;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -49,13 +49,8 @@ public class TableService {
         return false;
     }
 
-    public Map<String,String> getTablesWithStatus(Date beginDate, Date endDate){
-        Map<String,String> result = new HashMap<String,String>();
-        enum Status{
-            FREE,
-            BOOKED,
-            UNAVAILABLE
-        }
+    public Map<Integer,TableStatusEnum> getTablesWithStatus(Date beginDate, Date endDate){
+        Map<Integer,TableStatusEnum> result = new HashMap<Integer,TableStatusEnum>();
 
         for(TableEntity table : readAll()){
             if (!table.isAvailable()){
@@ -71,10 +66,12 @@ public class TableService {
             }
 
             for(ReservationEntity reservation : reservations) {
-                if (!(beginDate.after(reservation.getBeginDate()) || endDate.before(reservation.getEndDate()))){
-                    result.put(table.getTableId().toString(), Status.FREE.toString());
+                if ((beginDate.getTime() >= reservation.getBeginDate().getTime() && beginDate.getTime() <= reservation.getEndDate().getTime())
+                        || (endDate.getTime() >= reservation.getBeginDate().getTime() && endDate.getTime() <= reservation.getEndDate().getTime())
+                        || (beginDate.getTime() < reservation.getBeginDate().getTime() && endDate.getTime() > reservation.getEndDate().getTime())) {
+                    result.put(table.getTableId(), TableStatusEnum.RESERVED);
                 } else {
-                    result.put(table.getTableId().toString(), Status.BOOKED.toString());
+                    result.put(table.getTableId(), TableStatusEnum.AVAILABLE);
                 }
             }
         }
@@ -84,8 +81,7 @@ public class TableService {
 
     public Date strToDate(String date) throws ParseException {
         SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-        Date resultDate = formatter.parse(date);
-        return resultDate;
+        return formatter.parse(date);
     }
 
 }
