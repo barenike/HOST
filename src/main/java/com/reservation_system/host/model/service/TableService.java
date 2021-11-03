@@ -5,10 +5,14 @@ import com.reservation_system.host.model.entity.TableEntity;
 import com.reservation_system.host.model.repository.TableRepository;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Service
 public class TableService {
+
+    ReservationService reservationService;
 
     private final TableRepository tableRepository;
 
@@ -45,17 +49,43 @@ public class TableService {
         return false;
     }
 
-    public Map<TableEntity,Integer> getTablesWithStatus(List<TableEntity> tables, Date beginDate, Date endDate){
-        Map<TableEntity,Integer> result = new HashMap<TableEntity,Integer>();
+    public Map<String,String> getTablesWithStatus(Date beginDate, Date endDate){
+        Map<String,String> result = new HashMap<String,String>();
+        enum Status{
+            FREE,
+            BOOKED,
+            UNAVAILABLE
+        }
 
-        for(TableEntity table : tables){
+        for(TableEntity table : readAll()){
             if (!table.isAvailable()){
-                result.put(table, 3);
+                result.put(table.getTableId().toString(), Status.UNAVAILABLE.toString());
+                continue;
             }
-            ArrayList<ReservationEntity> reservations = ReservationService.getReservationsOnTableByDate(table.getTableId(), beginDate);
-            //не работает, посмотреть как использовать тут этот метод и дописать логику проверки
+            ArrayList<ReservationEntity> reservations = (ArrayList<ReservationEntity>)
+                    reservationService.getReservationsOnTableByDate(table.getTableId().toString(), beginDate);
+
+            if (reservations == null || reservations.isEmpty()){
+                result.put(table.getTableId().toString(), Status.FREE.toString());
+                continue;
+            }
+
+            for(ReservationEntity reservation : reservations) {
+                if (!(beginDate.after(reservation.getBeginDate()) || endDate.before(reservation.getEndDate()))){
+                    result.put(table.getTableId().toString(), Status.FREE.toString());
+                } else {
+                    result.put(table.getTableId().toString(), Status.BOOKED.toString());
+                }
+            }
         }
         return result;
 
     }
+
+    public Date strToDate(String date) throws ParseException {
+        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+        Date resultDate = formatter.parse(date);
+        return resultDate;
+    }
+
 }
