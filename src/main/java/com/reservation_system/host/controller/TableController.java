@@ -10,7 +10,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @RestController
@@ -29,7 +32,10 @@ public class TableController {
             if (tables == null || tables.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
-            Map<Integer, TableStatusEnum> tableMap = tableService.getTablesWithStatus(tables, tableRequest.getBeginDate(), tableRequest.getEndDate());
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
+            Date beginDate = formatter.parse(tableRequest.getBeginDate());
+            Date endDate = formatter.parse(tableRequest.getEndDate());
+            Map<Integer, TableStatusEnum> tableMap = tableService.getTablesWithStatus(tables, beginDate, endDate);
             return new ResponseEntity<>(tableMap, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

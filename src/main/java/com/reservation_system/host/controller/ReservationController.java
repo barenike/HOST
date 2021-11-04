@@ -4,25 +4,27 @@ import com.reservation_system.host.configuration.jwt.JwtProvider;
 import com.reservation_system.host.infrastructure.ReservationRequest;
 import com.reservation_system.host.model.entity.ReservationEntity;
 import com.reservation_system.host.model.service.ReservationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @RestController
 public class ReservationController {
 
-    @Autowired
-    private JwtProvider jwtProvider;
+    private final JwtProvider jwtProvider;
 
     private final ReservationService reservationService;
 
-    public ReservationController(ReservationService reservationService) {
+    public ReservationController(ReservationService reservationService, JwtProvider jwtProvider) {
         this.reservationService = reservationService;
+        this.jwtProvider = jwtProvider;
     }
 
     @PostMapping(value = "/user/reservations")
@@ -33,10 +35,13 @@ public class ReservationController {
         try {
             String userId = jwtProvider.getUserIdFromToken(token.substring(7));
             ReservationEntity reservation = new ReservationEntity();
+            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
+            Date beginDate = formatter.parse(reservationRequest.getBeginDate());
+            Date endDate = formatter.parse(reservationRequest.getEndDate());
             reservation.setUserId(UUID.fromString(userId));
             reservation.setTableId(reservationRequest.getTableId());
-            reservation.setBeginDate(reservationRequest.getBeginDate());
-            reservation.setEndDate(reservationRequest.getEndDate());
+            reservation.setBeginDate(beginDate);
+            reservation.setEndDate(endDate);
             reservationService.createReservation(reservation);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
