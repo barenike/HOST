@@ -169,14 +169,14 @@ public class ReservationController {
     }
 
     @GetMapping(value = "/user/reservations/{reservation_id}")
-    public ResponseEntity<ReservationEntity> getMyReservation(
+    public ResponseEntity<Optional<ReservationEntity>> getMyReservation(
             @PathVariable(name = "reservation_id") UUID reservationId,
             @RequestHeader (name = "Authorization") String token
     ) {
         try {
             String userId = jwtProvider.getUserIdFromToken(token.substring(7));
-            final ReservationEntity reservation = reservationService.getMyReservationById(reservationId, userId);
-            return reservation != null
+            final Optional<ReservationEntity> reservation = reservationService.getMyReservationById(reservationId, userId);
+            return reservation.isPresent()
                     ? new ResponseEntity<>(reservation, HttpStatus.OK)
                     : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (AccessDeniedException e) {
@@ -187,11 +187,11 @@ public class ReservationController {
     }
 
     @GetMapping(value = "/admin/reservations/{reservation_id}")
-    public ResponseEntity<ReservationEntity> getReservation(@PathVariable(name = "reservation_id") UUID reservationId) {
+    public ResponseEntity<Optional<ReservationEntity>> getReservation(@PathVariable(name = "reservation_id") UUID reservationId) {
         try {
-            final ReservationEntity reservation = reservationService.getReservationById(reservationId);
+            final Optional<ReservationEntity> reservation = reservationService.getOptionalReservationById(reservationId);
 
-            return reservation != null
+            return reservation.isPresent()
                     ? new ResponseEntity<>(reservation, HttpStatus.OK)
                     : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         } catch (Exception e) {

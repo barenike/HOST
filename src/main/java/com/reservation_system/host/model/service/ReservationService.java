@@ -25,18 +25,24 @@ public class ReservationService {
         return reservationRepository.findAll();
     }
 
+    public Optional<ReservationEntity> getOptionalReservationById(UUID reservationId) {
+        return reservationRepository.findById(reservationId);
+    }
+
     public ReservationEntity getReservationById(UUID reservationId) {
         return reservationRepository.getById(reservationId);
     }
 
-    public ReservationEntity getMyReservationById(UUID reservationId, String userId) throws AccessDeniedException {
-        ReservationEntity reservation = getReservationById(reservationId);
-        if (reservation == null) {
-            return null;
-        } else if (reservation.getUserId().toString().equals(userId)) {
-            return reservation;
+    public Optional<ReservationEntity> getMyReservationById(UUID reservationId, String userId) throws AccessDeniedException {
+        if (reservationRepository.existsById(reservationId)) {
+            Optional<ReservationEntity> reservation = getOptionalReservationById(reservationId);
+            if (reservation.isPresent() && reservation.get().getUserId().toString().equals(userId)) {
+                return reservation;
+            } else {
+                throw new AccessDeniedException("Forbidden");
+            }
         } else {
-            throw new AccessDeniedException("Forbidden");
+            return Optional.empty();
         }
     }
 
