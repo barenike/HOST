@@ -1,19 +1,21 @@
 package com.reservation_system.host.controller;
 
 import com.reservation_system.host.configuration.jwt.JwtProvider;
+import com.reservation_system.host.infrastructure.AdminReservationRequest;
 import com.reservation_system.host.infrastructure.ReservationRequest;
 import com.reservation_system.host.model.entity.ReservationEntity;
+import com.reservation_system.host.model.entity.TableEntity;
+import com.reservation_system.host.model.entity.TableStatusEnum;
 import com.reservation_system.host.model.service.ReservationService;
+import com.reservation_system.host.model.service.TableService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 public class ReservationController {
@@ -21,9 +23,12 @@ public class ReservationController {
     private final JwtProvider jwtProvider;
 
     private final ReservationService reservationService;
+    
+    private final TableService tableService;
 
-    public ReservationController(ReservationService reservationService, JwtProvider jwtProvider) {
+    public ReservationController(ReservationService reservationService, TableService tableService, JwtProvider jwtProvider) {
         this.reservationService = reservationService;
+        this.tableService = tableService;
         this.jwtProvider = jwtProvider;
     }
 
@@ -33,36 +38,82 @@ public class ReservationController {
             @RequestHeader (name = "Authorization") String token
     ) {
         try {
-            String userId = jwtProvider.getUserIdFromToken(token.substring(7));
             ReservationEntity reservation = new ReservationEntity();
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
-            Date beginDate = formatter.parse(reservationRequest.getBeginDate());
-            Date endDate = formatter.parse(reservationRequest.getEndDate());
+
+            String userId = jwtProvider.getUserIdFromToken(token.substring(7));
             reservation.setUserId(UUID.fromString(userId));
-            reservation.setTableId(reservationRequest.getTableId());
-            reservation.setBeginDate(beginDate);
-            reservation.setEndDate(endDate);
-            reservationService.createReservation(reservation);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+
+            return createReservation(reservation,
+                    reservationRequest.getTableId(),
+                    reservationRequest.getBeginDate(),
+                    reservationRequest.getBeginTime(),
+                    reservationRequest.getEndDate(),
+                    reservationRequest.getEndTime());
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
     @PostMapping(value = "/admin/reservations")
-    public ResponseEntity<HttpStatus> createReservation(@RequestBody ReservationEntity reservation) {
+    public ResponseEntity<HttpStatus> createReservation(@RequestBody AdminReservationRequest adminReservationRequest) {
         try {
-            reservationService.createReservation(reservation);
-            return new ResponseEntity<>(HttpStatus.CREATED);
+            ReservationEntity reservation = new ReservationEntity();
+
+            reservation.setUserId(adminReservationRequest.getUserId());
+
+            return createReservation(reservation,
+                    adminReservationRequest.getTableId(),
+                    adminReservationRequest.getBeginDate(),
+                    adminReservationRequest.getBeginTime(),
+                    adminReservationRequest.getEndDate(),
+                    adminReservationRequest.getEndTime());
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }
 
+    private ResponseEntity<HttpStatus> createReservation(ReservationEntity reservation,
+                                                         Integer tableId,
+                                                         String beginDate2,
+                                                         String beginTime,
+                                                         String endDate2,
+                                                         String endTime) throws ParseException {
+        reservation.setTableId(tableId);
+
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
+
+        Date beginDate = formatter.parse(String.format("%s %s", beginDate2, beginTime));
+        reservation.setBeginDate(beginDate);
+
+        Date endDate = formatter.parse(String.format("%s %s", endDate2, endTime));
+        reservation.setEndDate(endDate);
+
+        ResponseEntity<HttpStatus> response = checkTableAvailability(tableId, beginDate, endDate);
+        if (response != null) {
+            return response;
+        }
+
+        reservationService.createReservation(reservation);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    private ResponseEntity<HttpStatus> checkTableAvailability(Integer tableId, Date beginDate, Date endDate) {
+        final List<TableEntity> tables = tableService.readAll();
+        if (tables == null || tables.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        Map<Integer, TableStatusEnum> tableMap = tableService.getTablesWithStatus(tables, beginDate, endDate);
+        if (!tableMap.get(tableId).equals(TableStatusEnum.AVAILABLE)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return null;
+    }
+
     @GetMapping(value = "/user/reservations")
     public ResponseEntity<List<ReservationEntity>> getMyReservations(@RequestHeader (name = "Authorization") String token) {
         try {
-            final List<ReservationEntity> targetedReservations = reservationService.getMyReservations(token.substring(7));
+            String userId = jwtProvider.getUserIdFromToken(token.substring(7));
+            final List<ReservationEntity> targetedReservations = reservationService.getMyReservations(userId);
 
             return !targetedReservations.isEmpty()
                     ? new ResponseEntity<>(targetedReservations, HttpStatus.OK)

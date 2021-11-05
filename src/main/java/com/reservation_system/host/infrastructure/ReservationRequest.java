@@ -14,5 +14,11 @@ public class ReservationRequest {
     private String beginDate;
 
     @NotEmpty
+    private String beginTime;
+
+    @NotEmpty
     private String endDate;
+
+    @NotEmpty
+    private String endTime;
 }

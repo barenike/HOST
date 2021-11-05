@@ -32,9 +32,11 @@ public class TableController {
             if (tables == null || tables.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
+
             SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
-            Date beginDate = formatter.parse(tableRequest.getBeginDate());
-            Date endDate = formatter.parse(tableRequest.getEndDate());
+            Date beginDate = formatter.parse(String.format("%s %s", tableRequest.getBeginDate(), tableRequest.getBeginTime()));
+            Date endDate = formatter.parse(String.format("%s %s", tableRequest.getEndDate(), tableRequest.getEndTime()));
+
             Map<Integer, TableStatusEnum> tableMap = tableService.getTablesWithStatus(tables, beginDate, endDate);
             return new ResponseEntity<>(tableMap, HttpStatus.OK);
         } catch (Exception e) {

@@ -29,20 +29,6 @@ public class ReservationService {
         return reservationRepository.getById(reservationId);
     }
 
-    public List<ReservationEntity> getReservationsByTableId(String tableId) {
-        List<ReservationEntity> allReservations = getAllReservations();
-        List<ReservationEntity> result = new ArrayList<>();
-        if (allReservations == null) {
-            return null;
-        }
-        for (ReservationEntity reservation : allReservations) {
-            if (reservation.getTableId().toString().equals(tableId)) {
-                result.add(reservation);
-            }
-        }
-        return result;
-    }
-
     public ReservationEntity getMyReservationById(UUID reservationId, String userId) throws AccessDeniedException {
         ReservationEntity reservation = getReservationById(reservationId);
         if (reservation == null) {
@@ -66,22 +52,6 @@ public class ReservationService {
             }
         }
         return targetedReservations;
-    }
-
-    public List<ReservationEntity> getReservationsOnTableByDate(String tableId, Date date){
-        List<ReservationEntity> allReservations = getReservationsByTableId(tableId);
-
-        if (allReservations == null) {
-            return null;
-        }
-
-        ArrayList<ReservationEntity> result = new ArrayList<>();
-        for (ReservationEntity reservation : allReservations) {
-            if (DateUtils.isSameDay(reservation.getBeginDate(), date)) {
-                result.add(reservation);
-            }
-        }
-        return result;
     }
 
     public boolean update(ReservationEntity reservation, UUID reservationId) {
