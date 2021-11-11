@@ -23,7 +23,7 @@ public class ReservationController {
     private final JwtProvider jwtProvider;
 
     private final ReservationService reservationService;
-    
+
     private final TableService tableService;
 
     public ReservationController(ReservationService reservationService, TableService tableService, JwtProvider jwtProvider) {
@@ -35,7 +35,7 @@ public class ReservationController {
     @PostMapping(value = "/user/reservations")
     public ResponseEntity<HttpStatus> createMyReservation(
             @RequestBody ReservationRequest reservationRequest,
-            @RequestHeader (name = "Authorization") String token
+            @RequestHeader(name = "Authorization") String token
     ) {
         try {
             ReservationEntity reservation = new ReservationEntity();
@@ -110,7 +110,7 @@ public class ReservationController {
     }
 
     @GetMapping(value = "/user/reservations")
-    public ResponseEntity<List<ReservationEntity>> getMyReservations(@RequestHeader (name = "Authorization") String token) {
+    public ResponseEntity<List<ReservationEntity>> getMyReservations(@RequestHeader(name = "Authorization") String token) {
         try {
             String userId = jwtProvider.getUserIdFromToken(token.substring(7));
             final List<ReservationEntity> targetedReservations = reservationService.getMyReservations(userId);
@@ -139,7 +139,7 @@ public class ReservationController {
     @DeleteMapping(value = "/user/reservations/{reservation_id}")
     public ResponseEntity<HttpStatus> deleteMyReservation(
             @PathVariable(name = "reservation_id") UUID reservationId,
-            @RequestHeader (name = "Authorization") String token
+            @RequestHeader(name = "Authorization") String token
     ) {
         try {
             String userId = jwtProvider.getUserIdFromToken(token.substring(7));
@@ -171,7 +171,7 @@ public class ReservationController {
     @GetMapping(value = "/user/reservations/{reservation_id}")
     public ResponseEntity<Optional<ReservationEntity>> getMyReservation(
             @PathVariable(name = "reservation_id") UUID reservationId,
-            @RequestHeader (name = "Authorization") String token
+            @RequestHeader(name = "Authorization") String token
     ) {
         try {
             String userId = jwtProvider.getUserIdFromToken(token.substring(7));

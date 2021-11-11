@@ -53,7 +53,7 @@ public class TableService {
 
     public Map<Integer, TableStatusEnum> getTablesWithStatus(List<TableEntity> tables, Date beginDate, Date endDate) {
         Map<Integer, TableStatusEnum> result = new HashMap<>();
-        for (TableEntity table: tables) {
+        for (TableEntity table : tables) {
             result.put(table.getTableId(), TableStatusEnum.AVAILABLE);
         }
         for (TableEntity table : tables) {

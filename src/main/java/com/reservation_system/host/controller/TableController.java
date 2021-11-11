@@ -25,7 +25,7 @@ public class TableController {
         this.tableService = tableService;
     }
 
-    @GetMapping(value = "/user/tables")
+    @GetMapping(value = "/tables")
     public ResponseEntity<Map<Integer, TableStatusEnum>> getTableMap(@ModelAttribute TableRequest tableRequest) {
         try {
             final List<TableEntity> tables = tableService.readAll();
