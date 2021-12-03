@@ -83,9 +83,17 @@ public class ReservationController {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
 
         Date beginDate = formatter.parse(String.format("%s %s", beginDate2, beginTime));
-        reservation.setBeginDate(beginDate);
-
         Date endDate = formatter.parse(String.format("%s %s", endDate2, endTime));
+
+        if (beginDate.getTime() > endDate.getTime()) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        if (isWrongDate(beginDate) || isWrongDate(endDate)) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+
+        reservation.setBeginDate(beginDate);
         reservation.setEndDate(endDate);
 
         ResponseEntity<HttpStatus> response = checkTableAvailability(tableId, beginDate, endDate);
@@ -95,6 +103,19 @@ public class ReservationController {
 
         reservationService.createReservation(reservation);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    private boolean isWrongDate(Date date) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK);
+
+        if (dayOfWeek == 1 || dayOfWeek == 7) {
+            return true;
+        } else {
+            int hours = Integer.parseInt(new SimpleDateFormat("HH").format(date));
+            return hours < 8 || hours > 21;
+        }
     }
 
     private ResponseEntity<HttpStatus> checkTableAvailability(Integer tableId, Date beginDate, Date endDate) {
