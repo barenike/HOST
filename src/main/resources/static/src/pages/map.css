@@ -1,0 +1,22 @@
+.map{
+    border:1px solid black;
+    padding:20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap:30px;
+}
+.selected{
+    display: flex;
+    width:100%;
+    justify-content: space-between;
+    margin-bottom:20px;
+    align-items: center;
+}
+.sbm-but{
+outline:none;
+background:limegreen;
+color:white;
+border: none;
+border-radius: 5px;
+padding: 10px;
+}

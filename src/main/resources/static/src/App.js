@@ -1,24 +1,30 @@
 import React from "react";
-import {BrowserRouter, Route, Switch} from "react-router-dom"
-import {Home} from "./pages/Home";
-import {About} from "./pages/About";
-import {Date} from "./pages/Date";
+import {BrowserRouter} from "react-router-dom"
 import {Navbar} from "./components/Navbar";
+import { useRoutes } from "./routes";
+import { useAuth } from './auth.hook';
+import { AuthContext } from './context/AuthContext';
 
 
 function App() {
+  const { token, login, logout } = useAuth()
+const isAuthenticated = !!token
+const routes = useRoutes(isAuthenticated)
+
   return (
+    <AuthContext.Provider value={{
+      token, login, logout, isAuthenticated
+    }} >
       <BrowserRouter>
    <Navbar />
   <div className="container pt-4">
-    <Switch>
-      <Route path = {'/'} exact component={Home}/>
-      <Route path = {'/about'} component={About}/>
-      <Route path={'/datepicker'} component={Date}/>
-  </Switch>
+    {routes}
   </div>
       </BrowserRouter>
+      
+    </AuthContext.Provider>
   );
 }
+
 
 export default App;

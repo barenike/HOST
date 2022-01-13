@@ -1,16 +1,19 @@
-import React, {useRef,useState} from "react";
+import React, {useRef,useState,useContext} from "react";
 import logo from "./logo.png";
 import { Formik, Form } from 'formik';
 import { TextField } from './TextField';
+import { AuthContext } from "../context/AuthContext";
+
 import * as Yup from 'yup';
 export const SignIn = () => {
+    const auth = useContext(AuthContext);
     const validate = Yup.object({
         email: Yup.string()
             .email('Некорректный email'),
         password: Yup.string()
             .min(6, 'Пароль должен быть как минимум 6 символов')
     })
-
+//auth.login(data.token)
         return (
 
         <section className="vh-100">
