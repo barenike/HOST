@@ -33,6 +33,14 @@ export const Navbar = () => (
                     Выбор Даты
                 </NavLink>
             </li>
+            <li className="nav-item">
+                <NavLink
+                    className="nav-link"
+                    to="/map"
+                >
+                    Карта столов
+                </NavLink>
+            </li>
         </ul>
     </nav>
 )

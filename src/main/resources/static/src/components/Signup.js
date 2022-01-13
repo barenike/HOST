@@ -45,8 +45,8 @@ export const Signup = () => {
                 <div>
                     <h1 className="my-3-lg font-weight-bold .display-4">Зарегистрироваться</h1>
                     <Form>
-                        <TextField label="Email" name="email" type="email" required autocomplete="off" />
-                        <TextField label="Пароль" name="password" type="password" required autocomplete="off"/>
+                        <TextField label="Email" name="email" type="email" required autoComplete="off" />
+                        <TextField label="Пароль" name="password" type="password" required autoComplete="off"/>
                         <button className="btn btn-dark mt-3" type="submit">Сохранить</button>
                     </Form>
                 </div>
