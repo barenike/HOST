@@ -1,10 +1,11 @@
-import React, {useRef,useState,useContext} from "react";
+import React, {useContext} from "react";
 import logo from "./logo.png";
-import { Formik, Form } from 'formik';
-import { TextField } from './TextField';
-import { AuthContext } from "../context/AuthContext";
+import {Form, Formik} from 'formik';
+import {TextField} from './TextField';
+import {AuthContext} from "../context/AuthContext";
 
 import * as Yup from 'yup';
+
 export const SignIn = () => {
     const auth = useContext(AuthContext);
     const validate = Yup.object({

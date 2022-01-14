@@ -1,9 +1,9 @@
 import React from 'react'
-import { Switch, Route, Redirect } from 'react-router-dom'
-import { About } from './pages/About'
-import { Date } from './pages/Date'
-import { Home } from './pages/Home'
-import { Map } from './pages/Map'
+import {Redirect, Route, Switch} from 'react-router-dom'
+import {About} from './pages/About'
+import {Date} from './pages/Date'
+import {Home} from './pages/Home'
+import {Map} from './pages/Map'
 
 
 export const useRoutes = isAuthenticated => {

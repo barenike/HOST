@@ -8,11 +8,9 @@ import com.reservation_system.host.model.entity.UserEntity;
 import com.reservation_system.host.model.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
 
 @RestController
 public class UserController {
@@ -25,7 +23,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody @Valid RegistrationRequest registrationRequest) {
+    public ResponseEntity<?> registerUser(@ModelAttribute RegistrationRequest registrationRequest) {
         try {
             UserEntity user = new UserEntity();
             user.setEmail(registrationRequest.getEmail());
@@ -40,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<AuthResponse> auth(@RequestBody AuthRequest request) {
+    public ResponseEntity<AuthResponse> auth(@ModelAttribute AuthRequest request) {
         try {
             UserEntity userEntity = userService.findByEmailAndPassword(request.getEmail(), request.getPassword());
             if (userEntity != null) {

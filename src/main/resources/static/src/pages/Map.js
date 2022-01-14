@@ -1,6 +1,5 @@
-import React,{useState} from 'react'
-import { Modal } from '../components/Modal/Modal'
-import { Table } from '../components/Table/Table'
+import React, {useState} from 'react'
+import {Table} from '../components/Table/Table'
 import "./map.css"
 
 export const Map = () => {

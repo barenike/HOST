@@ -34,7 +34,7 @@ public class ReservationController {
 
     @PostMapping(value = "/user/reservations")
     public ResponseEntity<HttpStatus> createMyReservation(
-            @RequestBody ReservationRequest reservationRequest,
+            @ModelAttribute ReservationRequest reservationRequest,
             @RequestHeader(name = "Authorization") String token
     ) {
         try {
@@ -55,7 +55,7 @@ public class ReservationController {
     }
 
     @PostMapping(value = "/admin/reservations")
-    public ResponseEntity<HttpStatus> createReservation(@RequestBody AdminReservationRequest adminReservationRequest) {
+    public ResponseEntity<HttpStatus> createReservation(@ModelAttribute AdminReservationRequest adminReservationRequest) {
         try {
             ReservationEntity reservation = new ReservationEntity();
 

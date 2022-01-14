@@ -3,9 +3,10 @@ package com.reservation_system.host.infrastructure;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import java.io.Serializable;
 
 @Data
-public class ReservationRequest {
+public class ReservationRequest implements Serializable {
 
     @NotEmpty
     private Integer tableId;

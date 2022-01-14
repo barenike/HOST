@@ -1,9 +1,9 @@
 import React from "react";
 import {BrowserRouter} from "react-router-dom"
 import {Navbar} from "./components/Navbar";
-import { useRoutes } from "./routes";
-import { useAuth } from './auth.hook';
-import { AuthContext } from './context/AuthContext';
+import {useRoutes} from "./routes";
+import {useAuth} from './auth.hook';
+import {AuthContext} from './context/AuthContext';
 
 
 function App() {

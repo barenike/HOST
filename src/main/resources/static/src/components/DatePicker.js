@@ -1,6 +1,6 @@
 import React from 'react';
-import { Formik, Form } from 'formik';
-import { TextField } from './TextField';
+import {Form, Formik} from 'formik';
+import {TextField} from './TextField';
 import * as Yup from 'yup';
 import logo from "./logo.png";
 
