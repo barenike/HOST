@@ -8,8 +8,8 @@ import com.reservation_system.host.model.entity.UserEntity;
 import com.reservation_system.host.model.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -23,9 +23,10 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@ModelAttribute RegistrationRequest registrationRequest) {
+    public ResponseEntity<?> registerUser(@RequestBody RegistrationRequest registrationRequest) {
         try {
             UserEntity user = new UserEntity();
+            System.out.println(registrationRequest.getEmail());
             user.setEmail(registrationRequest.getEmail());
             user.setPassword(registrationRequest.getPassword());
             userService.create(user);
@@ -38,7 +39,7 @@ public class UserController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<AuthResponse> auth(@ModelAttribute AuthRequest request) {
+    public ResponseEntity<AuthResponse> auth(@RequestBody AuthRequest request) {
         try {
             UserEntity userEntity = userService.findByEmailAndPassword(request.getEmail(), request.getPassword());
             if (userEntity != null) {
