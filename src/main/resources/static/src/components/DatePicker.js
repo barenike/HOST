@@ -1,13 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Form, Formik} from 'formik';
 import {TextField} from './TextField';
 import * as Yup from 'yup';
 import logo from "./logo.png";
+import {AuthContext} from "../context/AuthContext";
+import { useHistory } from "react-router-dom";
 
 export const DatePick = () => {
+    const auth = useContext(AuthContext);
+    const history = useHistory();
     const validate = Yup.object({
         date: Yup.string()
-            .email('Некорректный email')
+
     })
     return (
         <section className="vh-100">
@@ -31,8 +35,12 @@ export const DatePick = () => {
                                                 date: '',
                                             }}
                                             validationSchema={validate}
-                                            onSubmit={values => {
-                                                console.log(values)
+                                            onSubmit={async values => {
+
+                                                auth.changeData(values.date)
+                                                auth.changeBeginTime(values.timeStart)
+                                                auth.changeEndTime(values.timeFinish)
+                                                history.push('/map');
                                             }}
                                         >
                                             {formik => (

@@ -4,6 +4,7 @@ import {About} from './pages/About'
 import {Date} from './pages/Date'
 import {Home} from './pages/Home'
 import {Map} from './pages/Map'
+import {BookingHistory} from "./pages/BookingHistory";
 
 
 export const useRoutes = isAuthenticated => {
@@ -29,7 +30,9 @@ export const useRoutes = isAuthenticated => {
       <Route path = {'/about'} >
           <About/>
       </Route>
-
+            <Route path="/book" exact>
+                <BookingHistory/>
+            </Route>
             <Redirect to="/" />
         </Switch>
 

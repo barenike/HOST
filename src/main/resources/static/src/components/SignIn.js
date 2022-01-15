@@ -43,8 +43,17 @@ export const SignIn = () => {
                                                     password: '',
                                                 }}
                                                 validationSchema={validate}
-                                                onSubmit={values => {
-                                                    console.log(values)
+                                                onSubmit={async values => {
+                                                    const data = {email: values.email, password: values.password}
+                                                    console.log(JSON.stringify(data))
+                                                    let res = await fetch("/auth", {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type': 'application/json'
+                                                        },
+                                                        body: JSON.stringify(data)
+                                                    })
+                                                    auth.login(await res.json())
                                                 }}
                                             >
                                                 {formik => (
@@ -53,13 +62,13 @@ export const SignIn = () => {
                                                         <Form>
                                                             <TextField name="email" type="email"  placeholder="Enter Email" required/>
                                                             <TextField name="password" type="password" placeholder="Enter Password" required/>
-                                                            <button className="btn btn-dark mt-3" type="submit">Сохранить</button>
+                                                            <button className="btn btn-dark mt-3" type="submit">Войти</button>
                                                         </Form>
                                                     </div>
                                                 )}
                                             </Formik>
                                             <a className="small text-muted" href="#!">Забыли Пароль?</a>
-                                            <p className="mb-5 pb-lg-2 extra">Нет Аккаунта? <a href="#!" className="extra">Зарегистрируйтесь здесь</a></p>
+                                            <p className="mb-5 pb-lg-2 extra">Нет Аккаунта? <a href="/about" className="extra">Зарегистрируйтесь здесь</a></p>
                                             <a href="#!" className="small text-muted">Правила Использования</a><br/>
                                             <a href="#!" className="small text-muted">Политика приватности</a>
                                     </div>

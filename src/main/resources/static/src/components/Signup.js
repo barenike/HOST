@@ -4,6 +4,7 @@ import {TextField} from './TextField';
 import * as Yup from 'yup';
 import logo from "./logo.png";
 
+
 export const Signup = () => {
     const validate = Yup.object({
         email: Yup.string()
@@ -11,8 +12,8 @@ export const Signup = () => {
         password: Yup.string()
             .min(6, 'Пароль должен быть как минимум 6 символов'),
         confirmPassword: Yup.string()
-            .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать')
-    })
+            .oneOf([Yup.ref('password'), null], 'Пароли должны совпадать')})
+
     return (
         <section className="vh-100">
             <div className="container py-5 h-100">
@@ -36,18 +37,30 @@ export const Signup = () => {
                 password: '',
                 confirmPassword: ''
             }}
+
             validationSchema={validate}
-            onSubmit={values => {
-                console.log(values)
-            }}
+
+            onSubmit={async (values) => {
+                const data = {email: values.email, password: values.password}
+                console.log(JSON.stringify(data))
+                    await fetch("/register", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                }
+            }
+
         >
             {formik => (
                 <div>
                     <h1 className="my-3-lg font-weight-bold .display-4">Зарегистрироваться</h1>
                     <Form>
-                        <TextField label="Email" name="email" type="email" required autoComplete="off" />
-                        <TextField label="Пароль" name="password" type="password" required autoComplete="off"/>
-                        <button className="btn btn-dark mt-3" type="submit">Сохранить</button>
+                        <TextField label="Email" name="email" type="email" validate required />
+                        <TextField label="Пароль" name="password" type="password" validate required/>
+                        <button className="btn btn-dark mt-3" type="submit">Создать</button>
                     </Form>
                 </div>
             )}
