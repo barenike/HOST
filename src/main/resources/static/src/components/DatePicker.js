@@ -36,6 +36,7 @@ export const DatePick = () => {
                                             }}
                                             validationSchema={validate}
                                             onSubmit={async values => {
+
                                                 auth.changeData(values.date)
                                                 auth.changeBeginTime(values.timeStart)
                                                 auth.changeEndTime(values.timeFinish)
