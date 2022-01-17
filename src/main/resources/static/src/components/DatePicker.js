@@ -4,7 +4,7 @@ import {TextField} from './TextField';
 import * as Yup from 'yup';
 import logo from "./logo.png";
 import {AuthContext} from "../context/AuthContext";
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom";
 
 export const DatePick = () => {
     const auth = useContext(AuthContext);
@@ -18,7 +18,7 @@ export const DatePick = () => {
             <div className="container py-5 h-100">
                 <div className="row d-flex justify-content-center align-items-center vh-100">
                     <div className="col col-xl-10">
-                        <div className="card" >
+                        <div className="card">
                             <div className="row g-0">
                                 <div className="col-md-6 col-lg-5 d-none d-md-block">
                                     <img
@@ -29,7 +29,7 @@ export const DatePick = () => {
                                 </div>
                                 <div className="col-md-6 col-lg-7 d-flex align-items-center">
                                     <div className="card-body p-4 p-lg-5 text-black">
-                                        <img src={logo} alt="logo" />
+                                        <img src={logo} alt="logo"/>
                                         <Formik
                                             initialValues={{
                                                 date: '',
@@ -45,18 +45,23 @@ export const DatePick = () => {
                                         >
                                             {formik => (
                                                 <div>
-                                                    <h1 className="my-3-lg font-weight-bold .display-4">Выберите дату и время</h1>
+                                                    <h1 className="my-3-lg font-weight-bold .display-4">Выберите дату и
+                                                        время</h1>
                                                     <Form>
-                                                        <TextField label="Date" name="date" type="date" classname="inline" required/>
+                                                        <TextField label="Date" name="date" type="date"
+                                                                   classname="inline" required/>
                                                         <label htmlFor="timeStart">Начало брони</label>
                                                         <div className="half-width">
-                                                        <TextField name="timeStart" type="time" className="inline" required/>
+                                                            <TextField name="timeStart" type="time" className="inline"
+                                                                       required/>
                                                         </div>
                                                         <label htmlFor="timeFinish">Конец брони</label>
                                                         <div className="half-width">
-                                                        <TextField name="timeFinish" type="time" className="inline" required/>
+                                                            <TextField name="timeFinish" type="time" className="inline"
+                                                                       required/>
                                                         </div>
-                                                        <button className="btn btn-dark mt-3" type="submit">Сохранить</button>
+                                                        <button className="btn btn-dark mt-3" type="submit">Сохранить
+                                                        </button>
                                                     </Form>
                                                 </div>
                                             )}

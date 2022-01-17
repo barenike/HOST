@@ -1,25 +1,28 @@
-.table{
-    width:80px;
+.table {
+    width: 80px;
     border-radius: 40%;
-    height:50px;
-    color:white;
+    height: 50px;
+    color: white;
     display: flex;
-    justify-content :center;
+    justify-content: center;
     align-items: center;
-    cursor:pointer;
-    border:1px solid black;
-    
-}
-.availible{
-    background-color:rgb(52, 134, 52);
+    cursor: pointer;
+    border: 1px solid black;
 
 }
-.reserved{
-    background-color:coral;
+
+.availible {
+    background-color: rgb(52, 134, 52);
+
+}
+
+.reserved {
+    background-color: coral;
     pointer-events: none;
 
 }
-.unavailible{
-    background-color:lightgray;
+
+.unavailible {
+    background-color: lightgray;
     pointer-events: none;
 }
