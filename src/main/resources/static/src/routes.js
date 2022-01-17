@@ -18,8 +18,10 @@ export const useRoutes = isAuthenticated => {
                 <Route path="/map" exact>
                 <Map/>
                 </Route>
-                
-                <Redirect to="/datepicker" />
+                <Route path="/book" exact>
+                    <BookingHistory/>
+                </Route>
+                <Redirect to="/book" />
             </Switch>)
     }
     return (
@@ -30,9 +32,6 @@ export const useRoutes = isAuthenticated => {
       <Route path = {'/about'} >
           <About/>
       </Route>
-            <Route path="/book" exact>
-                <BookingHistory/>
-            </Route>
             <Redirect to="/" />
         </Switch>
 
@@ -43,4 +42,5 @@ export const useRoutes = isAuthenticated => {
       
       <Route path={'/datepicker'} component={Date}/>
       <Route path={'/map'} component={Map}/>
+        <Route> path={'/book'} component={BookingHistory}</Route>
   </Switch>

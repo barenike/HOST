@@ -53,7 +53,8 @@ export const SignIn = () => {
                                                         },
                                                         body: JSON.stringify(data)
                                                     })
-                                                    auth.login(await res.json())
+                                                    let resData = await res.json();
+                                                    auth.login(resData.token)
                                                 }}
                                             >
                                                 {formik => (

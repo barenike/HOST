@@ -65,6 +65,7 @@ export const Signup = () => {
                 </div>
             )}
         </Formik>
+                                        <p className="mb-5 pb-lg-2 extra">Уже есть аккаунт? <a href="/" className="extra">Войти</a></p>
             </div>
                     </div>
                 </div>

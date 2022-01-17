@@ -5,6 +5,7 @@ import {AuthContext} from "../context/AuthContext";
 import {Form, Formik} from 'formik';
 
 
+
 export const Map = () => {
     const [selectedTable, setSelectedTable] = useState("")
     const [tables,setTables] = useState()
@@ -30,7 +31,7 @@ export const Map = () => {
         let res = await fetch(url, {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${auth.token['token']}`
+                'Authorization': `Bearer ${auth.token}`
             }
         })
         const tables= await res.json()
@@ -42,6 +43,7 @@ export const Map = () => {
     }
 
     const handleSubmit = async () => {
+        alert('Стол Забронирован')
         const data = {beginDate: auth.data, endDate:auth.data, beginTime: auth.beginTime, endTime:auth.endTime, tableId:selectedTable}
         console.log(JSON.stringify(data))
         let res = await fetch("/user/reservations", {
